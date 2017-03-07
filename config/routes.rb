@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
 
-  namespace :users do
-    get ":name" => "show#run"
+  def at(action, path)
+    get path => "#{action}#call"
   end
+
+  namespace :users do
+    get "/" => "show#call"
+    get ":name" => "show#call"
+  end
+
+  namespace :events do
+    at(:index, "/")
+    at(:show, ":id")
+  end
+
+  root 'users/show#call'
 
   # Example resource route within a namespace:
   #   namespace :admin do
@@ -11,20 +23,8 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
 
   # Example resource route with options:
   #   resources :products do
@@ -35,20 +35,6 @@ Rails.application.routes.draw do
   #
   #     collection do
   #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
   #     end
   #   end
 
